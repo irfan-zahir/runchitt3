@@ -22,6 +22,61 @@ enum UserStatus {
     trash
 }
 
+model Account {
+    id String @id @unique @default(cuid())
+    fid String @unique
+    phone String
+    
+    profile Profile? 
+}
+
+model Profile {
+    id String @id @unique @default(cuid())
+    name String
+    image String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    
+    accountId String @unique
+    account Account @relation(fields:[accountId], references:[id])
+    
+    employee Employee[]
+}
+
+model Shop {
+    id String @id @default(cuid())
+    name String
+    address String
+    
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    
+    roles Role[]
+    employees Employee[]
+}
+
+model Role {
+    id Int @id @default(autoincrement())
+    name String
+    permissions String[]
+    
+    shopId String
+    shop Shop @relation(fields:[shopId], references:[id])
+    
+    employees Employee[]
+}
+
+model Employee {
+    id Int @id @default(autoincrement())
+    profileId String
+    profile Profile @relation(fields:[profileId], references:[id])
+    
+    shopId String
+    shop Shop @relation(fields:[shopId], references:[id])
+    
+    roles Role[]
+}
+
 model User {
     id            String     @id @default(cuid())
     firebaseId    String?
