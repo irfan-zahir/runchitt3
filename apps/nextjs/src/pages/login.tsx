@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { firebaseClient } from '../lib/firebase/firebaseClient'
+import { auth } from '../lib/firebase/firebaseClient'
 import { NextPage } from 'next'
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+} from 'firebase/auth'
 
 const Login: NextPage = () => {
     const [email, setEmail] = useState('')
@@ -25,9 +29,7 @@ const Login: NextPage = () => {
             />
             <button
                 onClick={async () => {
-                    await firebaseClient
-                        .auth()
-                        .createUserWithEmailAndPassword(email, pass)
+                    await createUserWithEmailAndPassword(auth, email, pass)
                     window.location.href = '/'
                 }}
             >
@@ -35,9 +37,7 @@ const Login: NextPage = () => {
             </button>
             <button
                 onClick={async () => {
-                    await firebaseClient
-                        .auth()
-                        .signInWithEmailAndPassword(email, pass)
+                    await signInWithEmailAndPassword(auth, email, pass)
                     window.location.href = '/'
                 }}
             >

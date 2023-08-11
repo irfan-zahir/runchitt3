@@ -3,7 +3,7 @@ import { createTRPCNext } from '@trpc/next'
 import { httpBatchLink } from '@trpc/client'
 import type { AppRouter } from '@acme/api'
 import { transformer } from '@acme/api/transformer'
-import { firebaseClient } from '../lib/firebase/firebaseClient'
+import { auth } from '../lib/firebase/firebaseClient'
 
 const getBaseUrl = () => {
     if (typeof window !== 'undefined') return '' // browser should use relative url
@@ -24,9 +24,7 @@ export const trpc = createTRPCNext<AppRouter>({
                         return {
                             Authorization:
                                 'Bearer ' +
-                                (await firebaseClient
-                                    .auth()
-                                    .currentUser?.getIdToken()),
+                                (await auth.currentUser?.getIdToken()),
                         }
                     },
                 }),

@@ -7,7 +7,7 @@ import {
     useContext,
     ReactNode,
 } from 'react'
-import { firebaseClient } from '../lib/firebase/firebaseClient'
+import { auth } from '../lib/firebase/firebaseClient'
 
 const AuthContext = createContext<{ user: firebase.User | null }>({
     user: null,
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: Props) {
     // force refresh the token every 10 minutes
     useEffect(() => {
         const handle = setInterval(async () => {
-            const user = firebaseClient.auth().currentUser
+            const user = auth.currentUser
             if (user) await user.getIdToken(true)
         }, 10 * 60 * 1000)
 

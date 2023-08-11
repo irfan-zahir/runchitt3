@@ -2,7 +2,7 @@ import React from 'react'
 import nookies from 'nookies'
 import { useRouter } from 'next/router'
 import { firebaseAdmin } from '../lib/firebase/firebaseAdmin'
-import { firebaseClient } from '../lib/firebase/firebaseClient'
+import { auth } from '../lib/firebase/firebaseClient'
 
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next'
 
@@ -49,12 +49,9 @@ const AuthenticatedPage = (
             <p>{props.message}</p>
             <button
                 onClick={async () => {
-                    await firebaseClient
-                        .auth()
-                        .signOut()
-                        .then(() => {
-                            router.push('/')
-                        })
+                    await auth.signOut().then(() => {
+                        router.push('/')
+                    })
                 }}
             >
                 Sign out

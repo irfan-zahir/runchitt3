@@ -2,13 +2,13 @@
 import '../styles/globals.css'
 import type { AppType } from 'next/app'
 import { trpc } from '../utils/trpc'
-import { AuthProvider } from '../provider/AuthProvider'
+import { UserProvider } from '../context/user/useUserContext'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
     return (
-        <AuthProvider>
+        <UserProvider>
             <Component {...pageProps} />
-        </AuthProvider>
+        </UserProvider>
     )
 }
 
