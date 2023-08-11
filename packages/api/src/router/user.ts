@@ -76,4 +76,31 @@ export const userRouter = t.router({
                 })
             }
         }),
+
+    login: protectedProcedure.query(async ({ ctx }) => {
+        try {
+            const {
+                session: {
+                    user: { uid: fid, phone_number: phone },
+                },
+            } = ctx
+
+            return prisma.account.findFirst({
+                where: { OR: { fid, phone } },
+                include: { shopAccesses: true },
+            })
+        } catch (error: any) {
+            console.log('Error', error)
+            throw new TRPCError({
+                code: 'CONFLICT',
+                message: error?.message
+                    ? error?.message
+                    : 'Error creating user. Please try again later.',
+            })
+        }
+    }),
+
+    linkShopAccess: protectedProcedure
+        .input(z.string().cuid('Invalid shop access'))
+        .mutation(({ ctx, input: shopAccess }) => {}),
 })
