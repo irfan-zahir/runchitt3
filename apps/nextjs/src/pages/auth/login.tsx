@@ -1,5 +1,5 @@
+
 import Head from 'next/head'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FloatingInput } from '../../components/input'
@@ -9,6 +9,9 @@ import {
     getAuth,
     signInWithPhoneNumber,
 } from 'firebase/auth'
+
+import {Dialog} from "@headlessui/react"
+import { useUserContext } from '../../context/user/useUserContext'
 
 declare global {
     interface Window {
@@ -22,6 +25,9 @@ const Login = () => {
     const auth = getAuth()
     const { register, reset, handleSubmit } = useForm()
 
+    const userCtx = useUserContext()
+    const [loading , setLoading] = useState(true)
+
     const [confirmCode, setConfirmCode] = useState<ConfirmationResult | null>(
         null
     )
@@ -32,9 +38,8 @@ const Login = () => {
             { size: 'invisible' },
             auth
         )
-
-        return () => {}
-    }, [])
+        return
+    })
 
     const sendOTP: PhoneFormHandler = ({ phone, countryCode = '+6' }) => {
         const appVerifier = window.recaptchaVerifier
@@ -58,7 +63,6 @@ const Login = () => {
         code &&
         (await confirmCode.confirm(code).catch((e) => {
             console.error('verifying OTP code: ', e)
-            setConfirmCode(null)
         }))
 
     return (
@@ -126,6 +130,7 @@ const Login = () => {
                         </form>
                     </div>
                 </div>
+
             </div>
         </>
     )
