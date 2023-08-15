@@ -2,7 +2,7 @@
   "name": "create-t3-turbo",
   "private": true,
   "workspaces": [
-    "apps/nextjs",
+    "apps/*",
     "packages/*"
   ],
   "scripts": {
@@ -10,6 +10,8 @@
     "db-push": "npm run db-push -w @acme/db",
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "dev-nextjs": "npm run dev -w @acme/nextjs",
+    "dev-expo": "npm run dev -w @acme/expo",
     "clean": "find . -name node_modules -o -name .next -o -name .expo -type d -prune | xargs rm -rf",
     "lint": "turbo run lint && manypkg check",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
